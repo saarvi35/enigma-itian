@@ -1,0 +1,25 @@
+/* Readability pass: preserve the visual system while making small labels and controls easier to scan. */
+body{font-size:18px}
+.brand{gap:0}.brand-copy strong{font-size:17px}.brand-copy small{font-size:10px}
+.top-meta{font-size:12px}.text-button{font-size:13px}.site-footer{font-size:10px}
+.eyebrow,.hero-kicker{font-size:12px}.subhead{font-size:18px;line-height:1.75}.hero-copy .subhead{font-size:17px}
+.fine-print{font-size:14px}.stat span{font-size:12px}.stat strong{font-size:20px}
+.step strong{font-size:13px}.step small{font-size:10px}.step-num{font-size:11px}
+.panel h2{font-size:24px}.panel-intro{font-size:16px;line-height:1.75}.side-panel h3{font-size:17px}
+.field label{font-size:13px}.field input,.answer-input{font-size:17px}.form-footer .fine-print{font-size:14px}
+.info-row b{font-size:15px}.info-row span{font-size:14px;line-height:1.55}
+.timer-label{font-size:10px}.timer-value{font-size:26px}.progress-head{font-size:11px}
+.round-card .panel-intro{font-size:16px}.question-row small{font-size:12px}.question-row strong{font-size:16px}
+.evidence-header strong{font-size:12px}.evidence-header span{font-size:11px}.log-table{font-size:13px}.evidence-note{font-size:14px}
+.decode-cell small{font-size:11px}.decode-cell code{font-size:15px}.suspect-name{font-size:15px}.suspect-role{font-size:12px}.suspect-status{font-size:11px}.suspect p{font-size:13px;line-height:1.6}
+.answer-message{font-size:13px}.hint-count{font-size:12px}.hint-button{font-size:14px}.hint-box{font-size:14px}
+.case-note{font-size:14px}.case-note b{font-size:11px}.team-chip{font-size:11px}
+.result-stat small{font-size:10px}.result-stat strong{font-size:20px}
+.admin-header h1{font-size:39px}.admin-stat span{font-size:10px}.admin-stat strong{font-size:24px}
+.admin-controls p{font-size:14px}.tab-button{font-size:12px}.admin-section-title{font-size:11px}
+table.results th{font-size:11px}table.results td{font-size:14px}.team-cell b{font-size:14px}.team-cell small{font-size:12px}.table-status{font-size:11px}
+.info-icon{font-size:0;border:0;background:#91b7ff18;width:8px;height:8px;border-radius:2px;align-self:center;margin:0 11px}
+.core-symbol{display:none}.orbit-tag{font-size:10px}
+.evidence-thread{white-space:pre-line;line-height:1.8}
+.organizer-login h1{font-size:38px}.organizer-login .subhead{font-size:15px}
+@media(max-width:680px){.top-meta{display:none}.site-footer{font-size:9px}.step strong{font-size:10px}.step small{font-size:8px}.hero-copy .subhead{font-size:16px}.panel-intro,.round-card .panel-intro{font-size:15px}.info-row b{font-size:14px}.info-row span{font-size:13px}.field input,.answer-input{font-size:16px}.timer-label{font-size:10px}.progress-head{font-size:11px}.suspect p{font-size:12px}.table-status{font-size:10px}}

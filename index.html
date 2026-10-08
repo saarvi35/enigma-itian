@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d1324" />
+  <meta name="description" content="ENIGMA — Decode the Unknown. An interactive digital investigation by the ITian Club, GNDEC." />
+  <title>ENIGMA — Decode the Unknown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="accessibility.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="ENIGMA home"><span class="brand-copy"><strong>ENIGMA</strong><small>DECODE THE UNKNOWN</small></span></a>
+      <div class="top-meta"><span class="club-mark">IT<span>ian</span> CLUB</span><span class="meta-divider"></span><span>GNDEC · LUDHIANA</span></div>
+      <nav class="top-actions"><button class="text-button" id="nav-help">How to play</button></nav>
+    </header>
+    <main id="app" aria-live="polite"></main>
+    <footer class="site-footer"><span>AN ITIAN CLUB INVESTIGATION</span><span>CASE FILE <b>EN–0426</b></span><span>BUILT FOR THE CURIOUS</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="modal-root"></div>
+  <script src="content.js"></script><script src="app.js"></script>
+</body>
+</html>

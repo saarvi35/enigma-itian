@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: enigma-event
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ORGANIZER_PIN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: enigma-event-db
+          property: connectionString
+
+databases:
+  - name: enigma-event-db
+    plan: free
+    region: singapore
