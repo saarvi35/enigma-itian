@@ -11,7 +11,7 @@ const organizerSession = crypto.randomBytes(32).toString('hex');
 const dataDir = process.env.ENIGMA_DATA_DIR || path.join(root, '.enigma-data');
 const teamFile = path.join(dataDir, 'teams.json');
 const eventFile = path.join(dataDir, 'event.json');
-const teamFields = ['id','name','p1','p2','registeredAt','startedAt','completedAt','expiredAt','status','round','variant','answers','hints','freeHints','penaltyHints','penaltySeconds','wrongAttempts','lockedUntil'];
+const teamFields = ['id','name','p1','p2','registeredAt','startedAt','completedAt','expiredAt','status','round','variant','answers','hints','freeHints','penaltyHints','penaltySeconds','wrongAttempts','wrongAttemptsByRound','lockedUntil'];
 let pool = null;
 if (process.env.DATABASE_URL) {
   const { Pool } = require('pg');

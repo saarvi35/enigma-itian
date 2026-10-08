@@ -58,21 +58,23 @@ test('complete team case, hint accounting, persistence, ranking and exports',asy
   app.click('#hint-btn');
   app.click('#modal-confirm');
   db=JSON.parse(app.localStorage.getItem('enigma-v1'));team=db.teams[0];
-  assert.equal(team.freeHints,1);assert.equal(team.penaltyHints,1);assert.equal(team.penaltySeconds,30);
+  assert.equal(team.freeHints,1);assert.equal(team.penaltyHints,1);assert.equal(team.penaltySeconds,60);
   const variants=app.context.window.ENIGMA_CASE.variants;
   const rounds=app.context.window.ENIGMA_CASE.rounds;
   for(let round=0;round<rounds.length;round++){
     db=JSON.parse(app.localStorage.getItem('enigma-v1'));team=db.teams[0];
     const v=variants.find(x=>x.id===team.variant);
     const answer=[v.trail.answer,v.decode.answer,'KAPOOR',v.locked.answer,v.final.answer][round];
-    app.element('#answer').value=answer;
     const submitAnswer=app.handlers.get('#answer-form:submit');
     assert.ok(submitAnswer,`answer form for round ${round+1}`);
+    if(round===0){for(const bad of ['wrong one','wrong two','wrong three']){app.element('#answer').value=bad;submitAnswer({preventDefault(){}})}db=JSON.parse(app.localStorage.getItem('enigma-v1'));team=db.teams[0];assert.equal(team.wrongAttemptsByRound['0'],3);assert.equal(team.penaltySeconds,420);assert.equal(app.element('#timer').textContent,'38:00')}
+    if(round===1){app.element('#answer').value='wrong';submitAnswer({preventDefault(){}});db=JSON.parse(app.localStorage.getItem('enigma-v1'));team=db.teams[0];assert.equal(team.wrongAttemptsByRound['1'],1);assert.equal(team.penaltySeconds,480)}
+    app.element('#answer').value=answer;
     submitAnswer({preventDefault(){}});
     if(round<4) app.click('#continue-round');
   }
   db=JSON.parse(app.localStorage.getItem('enigma-v1'));team=db.teams[0];
-  assert.equal(team.status,'completed');assert.equal(team.round,5);assert.equal(team.penaltySeconds,30);
+  assert.equal(team.status,'completed');assert.equal(team.round,5);assert.equal(team.penaltySeconds,480);
   assert.equal(team.startedAt,start);
   assert.match(app.element('#app').innerHTML,/Case solved/);
   await new Promise(resolve=>setImmediate(resolve));
@@ -83,12 +85,13 @@ test('complete team case, hint accounting, persistence, ranking and exports',asy
   assert.match(app.element('#app').innerHTML,/COMPLETED/);
   assert.match(app.element('#app').innerHTML,/Cipher Pair/);
   assert.match(app.element('#app').innerHTML,/<td class="rank">01<\/td>/);
-  app.click('#export-csv');app.click('#export-json');
-  assert.deepEqual(app.downloads,['enigma-results.csv','enigma-results.json']);
-  assert.equal(app.exported.length,2);
-  const csv=await app.exported[0].text(),json=JSON.parse(await app.exported[1].text());
+  assert.doesNotMatch(app.element('#app').innerHTML,/data-filter="expired"|data-filter="registered"/);
+  app.click('#sort-by-time');assert.match(app.element('#app').innerHTML,/TIME: FASTEST FIRST/);
+  app.click('#export-csv');
+  assert.deepEqual(app.downloads,['enigma-results.csv']);
+  assert.equal(app.exported.length,1);
+  const csv=await app.exported[0].text();
   assert.match(csv,/Cipher Pair/);assert.match(csv,/Second Team/);
-  assert.equal(json.teams.length,2);assert.equal(json.teams[0].teamName,'Cipher Pair');
 });
 
 test('all hidden puzzle packets decode to internally consistent recovery keys',()=>{

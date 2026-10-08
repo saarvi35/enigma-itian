@@ -23,3 +23,29 @@ table.results th{font-size:11px}table.results td{font-size:14px}.team-cell b{fon
 .evidence-thread{white-space:pre-line;line-height:1.8}
 .organizer-login h1{font-size:38px}.organizer-login .subhead{font-size:15px}
 @media(max-width:680px){.top-meta{display:none}.site-footer{font-size:9px}.step strong{font-size:10px}.step small{font-size:8px}.hero-copy .subhead{font-size:16px}.panel-intro,.round-card .panel-intro{font-size:15px}.info-row b{font-size:14px}.info-row span{font-size:13px}.field input,.answer-input{font-size:16px}.timer-label{font-size:10px}.progress-head{font-size:11px}.suspect p{font-size:12px}.table-status{font-size:10px}}
+
+/* Clear contrast: white surfaces use navy text; saturated blue controls use white text. */
+.primary-button{background:linear-gradient(120deg,#3e70bd,#31599e);color:#fff;box-shadow:0 7px 24px #31599e28}
+.primary-button:hover{box-shadow:0 10px 30px #31599e40}
+.secondary-button{background:#f2f5fb;color:#1b365f;border-color:#cbd7e8}
+.secondary-button:hover{background:#e8eef8}
+.help-item,.suspect,.evidence-card{background:#fff;color:#18345c;border-color:#d5dfef}
+.help-item b{font-size:19px;color:#17365f}
+.help-item span{font-size:16px;line-height:1.65;color:#294665}
+.suspect-name,.suspect-status,.suspect p{color:#18345c}
+.suspect-role{color:#526786}
+.suspect p span{color:#405a7b!important}
+.evidence-header{background:#eaf0fa;border-color:#d6dfed}
+.evidence-header strong,.evidence-header span{color:#274365}
+.evidence-note{border-color:#dce4ef;color:#294665}
+.log-table th{background:#f1f5fb;color:#405675;border-color:#dde5f0}
+.log-table td{color:#263f60;border-color:#e5ebf4}
+.log-table td:last-child{color:#345e9d}
+.decode-cell{background:#f2f6fd;border-color:#dbe4f1}
+.decode-cell small{color:#506784}
+.decode-cell code{color:#1f3f6e}
+.case-note{background:#fff;border-color:#d7e1ef;color:#294665}
+.case-note b{color:#183a68}
+.case-progress .progress-head{color:#405675}
+.tab-button.active{background:#315fa8;border-color:#315fa8;color:#fff}
+@media(max-width:680px){.help-item b{font-size:17px}.help-item span{font-size:15px}}
