@@ -48,4 +48,7 @@ table.results th{font-size:11px}table.results td{font-size:14px}.team-cell b{fon
 .case-note b{color:#183a68}
 .case-progress .progress-head{color:#405675}
 .tab-button.active{background:#315fa8;border-color:#315fa8;color:#fff}
+/* Recovery panel clue labels use inline palette values; force readable navy on its white surface. */
+.round-card .evidence-body>.mono{color:#263f60!important}
+.round-card .evidence-body>.evidence-note{color:#294665}
 @media(max-width:680px){.help-item b{font-size:17px}.help-item span{font-size:15px}}
