@@ -8,7 +8,7 @@ services:
     startCommand: npm start
     envVars:
       - key: ORGANIZER_PIN
-        sync: false
+        value: "12345678"
       - key: DATABASE_URL
         fromDatabase:
           name: enigma-event-db

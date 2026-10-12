@@ -6,7 +6,7 @@ const crypto = require('node:crypto');
 const root = __dirname;
 const port = Number(process.env.PORT || 4173);
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8' };
-const organizerPin = process.env.ORGANIZER_PIN || crypto.randomInt(10000000, 99999999).toString();
+const organizerPin = process.env.ORGANIZER_PIN || '12345678';
 const organizerSession = crypto.randomBytes(32).toString('hex');
 const dataDir = process.env.ENIGMA_DATA_DIR || path.join(root, '.enigma-data');
 const teamFile = path.join(dataDir, 'teams.json');
@@ -71,7 +71,7 @@ const initializeStore = async () => {
 const readBody = req => new Promise((resolve, reject) => { let body = ''; req.on('data', chunk => { body += chunk; if (body.length > 65536) { reject(new Error('Request too large')); req.destroy(); } }); req.on('end', () => { try { resolve(JSON.parse(body || '{}')); } catch (error) { reject(error); } }); req.on('error', reject); });
 const json = (res, status, payload) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(payload)); };
 console.log(`Organizer console: http://127.0.0.1:${port}/organizer`);
-if (!process.env.ORGANIZER_PIN) console.log(`Organizer PIN (keep private): ${organizerPin}`);
+if (!process.env.ORGANIZER_PIN) console.log(`Organizer PIN: ${organizerPin}`);
 
 const server = http.createServer((req, res) => {
   const pathname = decodeURIComponent(new URL(req.url, `http://${req.headers.host || 'localhost'}`).pathname);

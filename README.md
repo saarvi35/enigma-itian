@@ -10,7 +10,7 @@ Requires Node.js 18 or later. From this folder:
 npm run dev
 ```
 
-Open `http://127.0.0.1:4173`. The participant page has no organizer-console button or link. Open `http://127.0.0.1:4173/organizer` and enter the organizer PIN printed in the server terminal. Start the event there; teams can register before or during the live event, then start their own 45-minute case clock. You can set a stable PIN with the `ORGANIZER_PIN` environment variable before starting the server.
+Open `http://127.0.0.1:4173`. The participant page has no organizer-console button or link. Open `http://127.0.0.1:4173/organizer` and use organizer PIN `12345678`. Start the event there; teams can register before or during the live event, then start their own 45-minute case clock. Set `ORGANIZER_PIN` to a private value before a public event.
 
 ## Case content
 
@@ -24,7 +24,7 @@ Locally, team records and event state are stored in `.enigma-data/`. When `DATAB
 
 1. Push this repository to GitHub.
 2. In Render, choose **New > Blueprint** and connect the repository.
-3. Enter a private 8-digit value when prompted for `ORGANIZER_PIN`.
+3. The Blueprint uses organizer PIN `12345678`; change `ORGANIZER_PIN` in Render to a private value before sharing the event publicly.
 4. Apply the Blueprint. It creates the free web service and PostgreSQL database and connects them with `DATABASE_URL`.
 5. Share the generated `onrender.com` URL with participants. Open `/organizer` on the same domain to manage the event.
 
