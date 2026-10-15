@@ -1,33 +1,21 @@
 # ENIGMA — Decode the Unknown
 
-A responsive sample experience for the ITian Club, GNDEC mystery-solving event.
+## Website description
 
-## Run locally
+ENIGMA is an interactive digital investigation event organized by the ITian Club, GNDEC. Two-person teams follow one connected mystery across five rounds: trace a breach, decode evidence, investigate suspects, unlock a recovery panel, and restore the missing file.
 
-Requires Node.js 18 or later. From this folder:
+Each team gets a randomized, matched-difficulty case packet and one 45-minute timer. Optional hints and incorrect answers affect the remaining time. The organizer console manages the event and displays team results for CSV export.
+
+## Setup
+
+### Run locally
+
+Install Node.js 18 or later, then open a terminal in this project folder and run:
 
 ```sh
+npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:4173`. The participant page has no organizer-console button or link. Open `http://127.0.0.1:4173/organizer` and use organizer PIN `12345678`. Start the event there; teams can register before or during the live event, then start their own 45-minute case clock. Set `ORGANIZER_PIN` to a private value before a public event.
+Open the participant website at `http://127.0.0.1:4173`. Open `http://127.0.0.1:4173/organizer` for the organizer console. 
 
-## Case content
-
-Puzzle sets and suspect records live in `content.js`, separate from the interface and progression code in `app.js`. Ten matched-difficulty variants share the same case structure and answer progression. Replace the content object to author another case while retaining the UI.
-
-The case requests browser fullscreen when a team starts. Exiting fullscreen or switching to another tab is detected and auto-submits/locks the team's case. Browsers do not let a website prevent tab creation or guarantee focus enforcement against developer tools; use supervised/kiosk devices for a high-stakes event.
-
-## Storage boundary
-
-Locally, team records and event state are stored in `.enigma-data/`. When `DATABASE_URL` is set, the server uses PostgreSQL for shared team records and event state. The `render.yaml` Blueprint configures a Free web service and Free Postgres database in Singapore. Render Free web services sleep after 15 minutes without requests, and the next request can take about a minute to wake; Free Postgres is limited to 1 GB and expires after 30 days. The client still calculates the case timer and validates answers, so use this setup for testing rather than a high-stakes competition.
-
-## Deploy on Render Free
-
-1. Push this repository to GitHub.
-2. In Render, choose **New > Blueprint** and connect the repository.
-3. The Blueprint uses organizer PIN `12345678`; change `ORGANIZER_PIN` in Render to a private value before sharing the event publicly.
-4. Apply the Blueprint. It creates the free web service and PostgreSQL database and connects them with `DATABASE_URL`.
-5. Share the generated `onrender.com` URL with participants. Open `/organizer` on the same domain to manage the event.
-
-Free Render is suitable for testing, with two limits: the web service sleeps after 15 minutes idle (first wake can take about one minute), and the free PostgreSQL database expires after 30 days. Back up/export results before the database expires.
