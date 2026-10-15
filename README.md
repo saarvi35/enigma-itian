@@ -14,7 +14,9 @@ Open `http://127.0.0.1:4173`. The participant page has no organizer-console butt
 
 ## Case content
 
-Puzzle sets and suspect records live in `content.js`, separate from the interface and progression code in `app.js`. The four variants share the same case structure and answer progression. Replace the content object to author another case while retaining the UI.
+Puzzle sets and suspect records live in `content.js`, separate from the interface and progression code in `app.js`. Ten matched-difficulty variants share the same case structure and answer progression. Replace the content object to author another case while retaining the UI.
+
+The case requests browser fullscreen when a team starts. Exiting fullscreen or switching to another tab is detected and auto-submits/locks the team's case. Browsers do not let a website prevent tab creation or guarantee focus enforcement against developer tools; use supervised/kiosk devices for a high-stakes event.
 
 ## Storage boundary
 

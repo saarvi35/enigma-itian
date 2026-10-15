@@ -51,4 +51,18 @@ table.results th{font-size:11px}table.results td{font-size:14px}.team-cell b{fon
 /* Recovery panel clue labels use inline palette values; force readable navy on its white surface. */
 .round-card .evidence-body>.mono{color:#263f60!important}
 .round-card .evidence-body>.evidence-note{color:#294665}
+/* Raise contrast consistently across light investigation surfaces. */
+.round-card .evidence-note,.round-card .question-row,.round-card .question-row small,
+.round-card .decode-cell,.round-card .suspect,.round-card .evidence-card,
+.round-card .evidence-body,.round-card .evidence-body p,.round-card .evidence-body span,
+.round-card .evidence-body small,.round-card .evidence-body code{color:#213a5d}
+.round-card .panel-intro,.round-card>.eyebrow{color:#405675}
+.round-card .evidence-note{background:#f3f6fb;border-color:#d6e0ee}
+.round-card .question-row{background:#f6f8fc;border-color:#dce4f0}
+.round-card .question-row small{color:#334f75}
+.round-card .evidence-header{background:#e8eef8}
+.round-card .log-table th{color:#334d70}
+.focus-gate{max-width:720px;margin:60px auto;padding:44px 28px}
+.focus-gate h1{color:#19365e}
+.focus-gate .subhead{color:#405a7b}
 @media(max-width:680px){.help-item b{font-size:17px}.help-item span{font-size:15px}}

@@ -14,7 +14,7 @@ function makeApp(values = new Map(), session = { authorized:false }, route = '/'
       addEventListener:(name,fn)=>handlers.set(`${selector}:${name}`,fn),click(){this.onclick?.()},focus(){},scrollIntoView(){}});
     return elements.get(selector);
   };
-  const document={hidden:false,querySelector:element,querySelectorAll:()=>[],addEventListener:(n,fn)=>handlers.set(`document:${n}`,fn),createElement:()=>({click(){downloads.push(this.download)}})};
+  const document={hidden:false,fullscreenElement:null,documentElement:{requestFullscreen:async()=>{document.fullscreenElement=document.documentElement}},querySelector:element,querySelectorAll:()=>[],addEventListener:(n,fn)=>handlers.set(`document:${n}`,fn),createElement:()=>({click(){downloads.push(this.download)}})};
   const location={pathname:route};Object.defineProperty(location,'href',{set:v=>{location.pathname=new URL(v,'http://localhost').pathname}});
   const window={ENIGMA_CASE:undefined,location,addEventListener:(n,fn)=>handlers.set(`window:${n}`,fn),dispatchEvent(){}};
   class FakeFormData { constructor(){ } get(k){return ({team:'Cipher Pair',p1:'Asha',p2:'Rohan',pin:'98765432'})[k]||''} }
@@ -26,7 +26,7 @@ function makeApp(values = new Map(), session = { authorized:false }, route = '/'
   vm.createContext(context);
   vm.runInContext(fs.readFileSync('content.js','utf8'),context);
   vm.runInContext(fs.readFileSync('app.js','utf8'),context);
-  const click=(selector)=>{const el=element(selector);const fn=handlers.get(`${selector}:click`)||el.onclick;assert.ok(fn,`missing click handler for ${selector}`);fn.call(el)};
+  const click=(selector)=>{const el=element(selector);const fn=handlers.get(`${selector}:click`)||el.onclick;assert.ok(fn,`missing click handler for ${selector}`);return fn.call(el)};
   return {element,handlers,click,localStorage,downloads,exported,context,session,values};
 }
 
@@ -48,8 +48,8 @@ test('complete team case, hint accounting, persistence, ranking and exports',asy
   let team=db.teams[0];
   assert.equal(team.status,'registered');
   assert.match(team.id,/^EN-/);
-  assert.ok(['A','B','C','D'].includes(team.variant));
-  app.click('#begin-case');
+  assert.ok(['A','B','C','D','E','F','G','H','I','J'].includes(team.variant));
+  await app.click('#begin-case');
   db=JSON.parse(app.localStorage.getItem('enigma-v1'));team=db.teams[0];
   assert.equal(team.status,'active');
   assert.doesNotMatch(app.element('#app').innerHTML,/Variant [A-D]|SET [A-D]/);
@@ -94,9 +94,28 @@ test('complete team case, hint accounting, persistence, ranking and exports',asy
   assert.match(csv,/Cipher Pair/);assert.match(csv,/Second Team/);
 });
 
+test('fullscreen exit or tab switch auto-submits and locks the active case',async()=>{
+  const session={authorized:false,teams:[],event:{state:'live',startedAt:Date.now(),closedAt:null}},app=makeApp(new Map(),session,'/');
+  await new Promise(resolve=>setImmediate(resolve));
+  await app.handlers.get('#register-form:submit')({preventDefault(){},currentTarget:{querySelector:()=>({disabled:false})}});
+  await app.click('#begin-case');
+  app.context.document.fullscreenElement=null;
+  app.handlers.get('document:fullscreenchange')();
+  const team=JSON.parse(app.localStorage.getItem('enigma-v1')).teams[0];
+  assert.equal(team.status,'expired');assert.equal(team.focusViolation,'fullscreen-exit');
+  assert.match(app.element('#app').innerHTML,/Case auto-submitted/);
+  const tabSession={authorized:false,teams:[],event:{state:'live',startedAt:Date.now(),closedAt:null}},tabApp=makeApp(new Map(),tabSession,'/');
+  await new Promise(resolve=>setImmediate(resolve));
+  await tabApp.handlers.get('#register-form:submit')({preventDefault(){},currentTarget:{querySelector:()=>({disabled:false})}});
+  await tabApp.click('#begin-case');tabApp.context.document.hidden=true;tabApp.handlers.get('document:visibilitychange')();
+  const tabTeam=JSON.parse(tabApp.localStorage.getItem('enigma-v1')).teams[0];
+  assert.equal(tabTeam.status,'expired');assert.equal(tabTeam.focusViolation,'tab-hidden');
+});
+
 test('all hidden puzzle packets decode to internally consistent recovery keys',()=>{
   const app=makeApp();
   const packets=app.context.window.ENIGMA_CASE.variants;
+  assert.equal(packets.length,10);
   const routes={NORTH:'1',EAST:'2',SOUTH:'3',WEST:'4'};
   for(const v of packets){
     const shift=Number(v.trail.answer.at(-1));

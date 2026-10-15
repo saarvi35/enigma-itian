@@ -27,7 +27,28 @@ window.ENIGMA_CASE = {
       ['19:47:06','R5','MOUNT','vault_index_02'],['19:48:25','R5','EXPORT','vault_index_02'],['19:48:28','R5','DELETE','vault_index_02'],
       ['19:54:33','C8','MOUNT','archive_02'],['19:55:41','C8','DIGEST','archive_02'],['19:57:08','C8','EXPORT','archive_02'],['19:57:11','C8','PURGE','stage.tmp'],
       ['20:03:22','M5','MOUNT','vault_index_02'],['20:04:35','M5','EXPORT','vault_index_02']
-    ],'SOUTH','XTZYM','... --- ..- - ....','19:44','5372')
+    ],'SOUTH','XTZYM','... --- ..- - ....','19:44','5372'),
+    ...[
+      {id:'E',session:'N7',index:'06',direction:'EAST',base:'20:30:00',incident:'20:31:20',archive:'20:37:00',close:'20:43:00'},
+      {id:'F',session:'P8',index:'02',direction:'SOUTH',base:'20:45:00',incident:'20:46:30',archive:'20:52:00',close:'20:58:00'},
+      {id:'G',session:'B9',index:'04',direction:'WEST',base:'21:00:00',incident:'21:01:10',archive:'21:07:00',close:'21:13:00'},
+      {id:'H',session:'D2',index:'06',direction:'NORTH',base:'21:15:00',incident:'21:16:20',archive:'21:22:00',close:'21:28:00'},
+      {id:'I',session:'T3',index:'02',direction:'EAST',base:'21:30:00',incident:'21:31:30',archive:'21:37:00',close:'21:43:00'},
+      {id:'J',session:'V4',index:'06',direction:'SOUTH',base:'21:45:00',incident:'21:46:10',archive:'21:52:00',close:'21:58:00'}
+    ].map(p=>{
+      const seconds=time=>{const [h,m,s]=time.split(':').map(Number);return h*3600+m*60+s};
+      const stamp=(base,offset)=>{let n=seconds(base)+offset;return `${String(Math.floor(n/3600)%24).padStart(2,'0')}:${String(Math.floor(n%3600/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`};
+      const source=`vault_index_${p.index}`,archive=`archive_${p.index}`;
+      const suspectStart=stamp(p.incident,0),sessionDigit=Number(p.session.at(-1));
+      const route={NORTH:'1',EAST:'2',SOUTH:'3',WEST:'4'}[p.direction];
+      const morse={NORTH:'-. --- .-. - ....',EAST:'. .- ... -',SOUTH:'... --- ..- - ....',WEST:'.-- . ... -'}[p.direction];
+      const cipher=p.direction.replace(/[A-Z]/g,c=>String.fromCharCode((c.charCodeAt(0)-65+sessionDigit)%26+65));
+      return makePacket(p.id,p.session,source,[
+        [stamp(p.base,0),p.session,'MOUNT',source],[stamp(p.base,79),p.session,'EXPORT',source],[stamp(p.base,82),p.session,'DELETE',source],
+        [stamp(p.incident,0),'C8','MOUNT',archive],[stamp(p.incident,64),'C8','DIGEST',archive],[stamp(p.incident,153),'C8','EXPORT',archive],[stamp(p.incident,156),'C8','PURGE','stage.tmp'],
+        [stamp(p.archive,0),'M5','MOUNT',source],[stamp(p.archive,77),'M5','EXPORT',source]
+      ],p.direction,cipher,morse,stamp(p.base,-150).slice(0,5),`${sessionDigit}${route}7${p.index.at(-1)}`);
+    })
   ],
   rounds: [
     { title:'The Digital Trail', eyebrow:'01 / TRACE THE BREACH', intro:'During the night shift, a source file was exported and erased. The audit mirror is incomplete. Reconstruct which session performed the suspicious transfer by comparing the service notes with the event sequence.', question:'Which session tag performed the suspicious export and deletion? Enter the full tag.', hints:[{type:'free',text:'A verified export needs a DIGEST in the same session. A staging purge is different from deleting the source file.'},{type:'penalty',text:'Find the session that has an EXPORT, then a source DELETE three seconds later, with no DIGEST between its MOUNT and EXPORT.'}] },
